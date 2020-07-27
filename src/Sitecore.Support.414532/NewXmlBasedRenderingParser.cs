@@ -36,6 +36,29 @@ using System.Linq;
 
         protected new void AddRenderingItemProperty(Rendering rendering, string propertyName, string value)
         {
+            #region patch 414532
+           
+            if (propertyName == "Parameters")
+            {
+                if (value.ContainsText() && rendering.Properties["Parameters"].ContainsText())
+                {
+                    var standardValues = WebUtil.ParseUrlParameters(value);
+                    var overridenValues = WebUtil.ParseUrlParameters(rendering["Parameters"]);
+                    if (overridenValues.Count != standardValues.Count)
+                    {
+                        foreach (string key in standardValues.Keys)
+                        {
+                            if (overridenValues.AllKeys.Contains(key))
+                                continue;
+                            if (standardValues[key] != string.Empty)
+                                overridenValues.Add(key, standardValues[key]);
+                        }
+                        rendering["Parameters"] = new UrlString(overridenValues).ToString();
+                        return;
+                    }
+                }
+            }
+            #endregion
             if (!rendering.Properties[propertyName].ContainsText())
             {
                 rendering[propertyName] = value;

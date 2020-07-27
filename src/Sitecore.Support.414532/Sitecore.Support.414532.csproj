@@ -66,6 +66,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClearRenderingParametersCache.cs" />
     <Compile Include="NewXmlBasedRenderingParser.cs" />
     <Compile Include="ProcessXmlBasedLayoutDefinition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

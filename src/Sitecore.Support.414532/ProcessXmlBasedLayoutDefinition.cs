@@ -13,10 +13,17 @@ using System.Xml.Linq;
 
     public class ProcessXmlBasedLayoutDefinition: Sitecore.Mvc.Pipelines.Response.BuildPageDefinition.ProcessXmlBasedLayoutDefinition
     {
-
+        #region patch 414532
+        static ProcessXmlBasedLayoutDefinition()
+        {
+            MvcSettings.RegisterObject(() => new NewXmlBasedRenderingParser());
+        }
+        #endregion
         protected override IEnumerable<Rendering> GetRenderings(XElement layoutDefinition, BuildPageDefinitionArgs args)
         {
-            XmlBasedRenderingParser parser = MvcSettings.GetRegisteredObject<XmlBasedRenderingParser>();
+            #region patch 414532
+            NewXmlBasedRenderingParser parser = MvcSettings.GetRegisteredObject<NewXmlBasedRenderingParser>();
+            #endregion
             foreach (XElement deviceNode in layoutDefinition.Elements("d"))
             {
                 Guid deviceId = deviceNode.GetAttributeValueOrEmpty("id").ToGuid();
