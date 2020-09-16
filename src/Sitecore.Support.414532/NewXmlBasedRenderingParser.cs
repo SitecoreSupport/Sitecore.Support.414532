@@ -38,9 +38,9 @@ using System.Linq;
         {
             #region patch 414532
            
-            if (propertyName == "Parameters")
+            if (rendering.RenderingItem.Database.Name!="core" && rendering.RenderingItem.InnerItem.Template.InnerItem.Paths.Path.StartsWith("/sitecore/templates/System/Layout/Renderings/"))
             {
-                if (value.ContainsText() && rendering.Properties["Parameters"].ContainsText())
+                if (propertyName == "Parameters" && value.ContainsText() && rendering.Properties["Parameters"].ContainsText())
                 {
                     var standardValues = WebUtil.ParseUrlParameters(value);
                     var overridenValues = WebUtil.ParseUrlParameters(rendering["Parameters"]);
